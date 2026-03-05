@@ -1,17 +1,6 @@
 import CartInitializer from '@/components/CartInitializer';
 import CartPageClient from '@/components/CartPageClient';
-import { CartData } from '@/types';
-
-async function getCartData(): Promise<CartData> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const res = await fetch(`${baseUrl}/api/cart`, { cache: 'no-store' });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch cart data');
-  }
-
-  return res.json();
-}
+import { getCartData } from '@/lib/cart';
 
 export default async function CartPage() {
   const cartData = await getCartData();
