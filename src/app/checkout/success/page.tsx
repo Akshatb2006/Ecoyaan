@@ -19,7 +19,7 @@ export default function SuccessPage() {
     };
 
     return (
-        <main className="checkout-page">
+        <main className="checkout-page checkout-page--has-sticky-bar">
             <StepIndicator currentStep={4} />
 
             <div className="checkout-page__content checkout-page__content--centered">
@@ -74,12 +74,31 @@ export default function SuccessPage() {
                         </p>
                     </div>
 
+                </div>
+            </div>
+
+            {/* Sticky bottom bar */}
+            <div className="sticky-bottom-bar">
+                <div className="sticky-bottom-bar__inner">
+                    <button
+                        type="button"
+                        onClick={() => router.push('/')}
+                        className="btn btn--outline"
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
+                        </svg>
+                        Back to Home
+                    </button>
                     <button
                         id="continue-shopping"
                         onClick={handleContinueShopping}
-                        className="btn btn--primary btn--full"
+                        className="btn btn--primary"
                     >
                         Continue Shopping
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M5 12h14" /><polyline points="12 5 19 12 12 19" />
+                        </svg>
                     </button>
                 </div>
             </div>

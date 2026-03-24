@@ -7,17 +7,17 @@ interface StepIndicatorProps {
 }
 
 const steps = [
-    { step: 1 as CheckoutStep, label: 'Cart', icon: '🛒' },
-    { step: 2 as CheckoutStep, label: 'Shipping', icon: '📦' },
-    { step: 3 as CheckoutStep, label: 'Payment', icon: '💳' },
-    { step: 4 as CheckoutStep, label: 'Done', icon: '✅' },
+    { step: 1 as CheckoutStep, label: 'Cart', number: '1' },
+    { step: 2 as CheckoutStep, label: 'Shipping', number: '2' },
+    { step: 3 as CheckoutStep, label: 'Payment', number: '3' },
+    { step: 4 as CheckoutStep, label: 'Confirmation', number: '4' },
 ];
 
 export default function StepIndicator({ currentStep }: StepIndicatorProps) {
     return (
         <nav aria-label="Checkout progress" className="step-indicator">
             <ol className="step-indicator__list">
-                {steps.map(({ step, label, icon }, index) => {
+                {steps.map(({ step, label, number }, index) => {
                     const isActive = step === currentStep;
                     const isCompleted = step < currentStep;
 
@@ -53,7 +53,7 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
                                         />
                                     </svg>
                                 ) : (
-                                    <span className="step-indicator__icon">{icon}</span>
+                                    <span className="step-indicator__number">{number}</span>
                                 )}
                             </div>
 

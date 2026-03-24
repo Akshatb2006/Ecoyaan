@@ -25,6 +25,10 @@ const checkoutSlice = createSlice({
             state.currentStep = 1;
             state.orderId = null;
         },
+        hydrateCheckout(state, action: PayloadAction<CheckoutState>) {
+            state.currentStep = action.payload.currentStep;
+            state.orderId = action.payload.orderId;
+        },
     },
 });
 
@@ -33,5 +37,5 @@ export const selectCurrentStep = (state: { checkout: CheckoutState }) =>
 export const selectOrderId = (state: { checkout: CheckoutState }) =>
     state.checkout.orderId;
 
-export const { setStep, setOrderId, resetCheckout } = checkoutSlice.actions;
+export const { setStep, setOrderId, resetCheckout, hydrateCheckout } = checkoutSlice.actions;
 export default checkoutSlice.reducer;

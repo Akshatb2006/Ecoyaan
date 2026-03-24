@@ -48,6 +48,15 @@ const cartSlice = createSlice({
                 (i) => i.product_id !== action.payload
             );
         },
+        hydrateCart(
+            state,
+            action: PayloadAction<CartState>
+        ) {
+            state.items = action.payload.items;
+            state.shippingFee = action.payload.shippingFee;
+            state.discount = action.payload.discount;
+            state.isLoaded = action.payload.isLoaded;
+        },
     },
 });
 
@@ -71,5 +80,5 @@ export const selectGrandTotal = (state: { cart: CartState }) => {
     return subtotal + state.cart.shippingFee - state.cart.discount;
 };
 
-export const { initializeCart, updateQuantity, removeItem } = cartSlice.actions;
+export const { initializeCart, updateQuantity, removeItem, hydrateCart } = cartSlice.actions;
 export default cartSlice.reducer;

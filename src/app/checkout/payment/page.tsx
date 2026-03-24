@@ -57,7 +57,7 @@ export default function PaymentPage() {
   };
 
   return (
-    <main className="checkout-page">
+    <main className="checkout-page checkout-page--has-sticky-bar">
       <StepIndicator currentStep={3} />
 
       <div className="payment-layout">
@@ -93,7 +93,7 @@ export default function PaymentPage() {
             <h3 className="payment-card__title">Payment</h3>
 
             <div className="payment-card__methods">
-              <label className="payment-method payment-method--selected">
+              <label className="payment-method">
                 <input
                   type="radio"
                   name="payment"
@@ -145,22 +145,6 @@ export default function PaymentPage() {
               </span>
             </div>
 
-            <button
-              id="pay-securely"
-              onClick={handlePayment}
-              disabled={isProcessing}
-              className="btn btn--primary btn--full btn--pay"
-            >
-              {isProcessing ? (
-                <span className="btn__spinner">
-                  <span className="spinner" />
-                  Processing...
-                </span>
-              ) : (
-                <>Pay Securely {formatCurrency(grandTotal)}</>
-              )}
-            </button>
-
             <p className="payment-card__secure">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -169,6 +153,37 @@ export default function PaymentPage() {
             </p>
           </div>
         </aside>
+      </div>
+
+      {/* Sticky bottom bar */}
+      <div className="sticky-bottom-bar">
+        <div className="sticky-bottom-bar__inner">
+          <button
+            type="button"
+            onClick={() => router.push('/checkout/shipping')}
+            className="btn btn--outline"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 12H5" /><polyline points="12 19 5 12 12 5" />
+            </svg>
+            Back
+          </button>
+          <button
+            id="pay-securely"
+            onClick={handlePayment}
+            disabled={isProcessing}
+            className="btn btn--primary btn--pay"
+          >
+            {isProcessing ? (
+              <span className="btn__spinner">
+                <span className="spinner" />
+                Processing...
+              </span>
+            ) : (
+              <>Pay Securely {formatCurrency(grandTotal)}</>
+            )}
+          </button>
+        </div>
       </div>
     </main>
   );

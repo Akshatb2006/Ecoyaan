@@ -1,11 +1,20 @@
-import { ShippingAddress, ShippingFormErrors } from '@/types';
+import { ShippingFormErrors } from '@/types';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_REGEX = /^\d{10}$/;
 const PINCODE_REGEX = /^\d{6}$/;
 
+interface ShippingFormValues {
+    fullName: string;
+    email: string;
+    phone: string;
+    pinCode: string;
+    city: string;
+    state: string;
+}
+
 export function validateShippingForm(
-    values: ShippingAddress
+    values: ShippingFormValues
 ): ShippingFormErrors {
     const errors: ShippingFormErrors = {};
 

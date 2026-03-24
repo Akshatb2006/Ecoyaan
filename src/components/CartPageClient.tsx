@@ -12,6 +12,10 @@ import {
   updateQuantity,
   removeItem,
 } from '@/store/slices/cartSlice';
+import {
+  selectShippingAddress,
+  selectShippingAddresses,
+} from '@/store/slices/shippingSlice';
 import StepIndicator from '@/components/StepIndicator';
 import { formatCurrency } from '@/utils/format';
 
@@ -23,13 +27,15 @@ export default function CartPageClient() {
   const discount = useAppSelector(selectDiscount);
   const subtotal = useAppSelector(selectSubtotal);
   const grandTotal = useAppSelector(selectGrandTotal);
+  const selectedAddress = useAppSelector(selectShippingAddress);
+  const allAddresses = useAppSelector(selectShippingAddresses);
 
   const handleProceed = () => {
     router.push('/checkout/shipping');
   };
 
   return (
-    <main className="checkout-page">
+    <main className="checkout-page checkout-page--has-sticky-bar">
       <StepIndicator currentStep={1} />
 
       <h1 className="checkout-page__title">Your Cart</h1>
@@ -54,18 +60,6 @@ export default function CartPageClient() {
           <span className="cart-summary__row--label">Total:</span>
           <span>{formatCurrency(grandTotal)}</span>
         </div>
-      </div>
-
-      {/* Proceed button (top, right-aligned) */}
-      <div className="cart-proceed">
-        <button
-          id="proceed-to-checkout"
-          onClick={handleProceed}
-          className="btn btn--primary"
-          disabled={items.length === 0}
-        >
-          Proceed to Checkout
-        </button>
       </div>
 
       {/* WhatsApp link */}
@@ -99,12 +93,31 @@ export default function CartPageClient() {
             className="delivery-section__add-btn"
             onClick={() => router.push('/checkout/shipping')}
           >
-            Add address
+            {allAddresses.length > 0 ? 'Manage addresses' : 'Add address'}
           </button>
         </div>
-        <p className="delivery-section__message">
-          No default address set. Please add an address.
-        </p>
+        {selectedAddress ? (
+          <div className="delivery-section__saved">
+            <div className="delivery-section__saved-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#0d7a5f">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+            </div>
+            <div className="delivery-section__saved-details">
+              <span className="delivery-section__saved-name">{selectedAddress.fullName}</span>
+              <span className="delivery-section__saved-line">
+                {selectedAddress.city}, {selectedAddress.state} - {selectedAddress.pinCode}
+              </span>
+            </div>
+            {allAddresses.length > 1 && (
+              <span className="delivery-section__badge">+{allAddresses.length - 1} more</span>
+            )}
+          </div>
+        ) : (
+          <p className="delivery-section__message">
+            No default address set. Please add an address.
+          </p>
+        )}
       </div>
 
       {/* Items list */}
@@ -219,14 +232,38 @@ export default function CartPageClient() {
           <span>Grand Total:</span>
           <span>{formatCurrency(grandTotal)}</span>
         </div>
-        <div className="cart-totals__proceed">
+      </div>
+
+      {/* Sticky bottom bar */}
+      <div className="sticky-bottom-bar">
+        <div className="sticky-bottom-bar__inner">
           <button
-            onClick={handleProceed}
-            className="btn btn--primary"
-            disabled={items.length === 0}
+            type="button"
+            onClick={() => router.push('/')}
+            className="btn btn--outline"
           >
-            Proceed to Checkout
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            Home
           </button>
+          <div className="sticky-bottom-bar__right">
+            <div className="sticky-bottom-bar__total">
+              <span className="sticky-bottom-bar__total-label">Total</span>
+              <span className="sticky-bottom-bar__total-amount">{formatCurrency(grandTotal)}</span>
+            </div>
+            <button
+              id="proceed-to-checkout"
+              onClick={handleProceed}
+              className="btn btn--primary"
+              disabled={items.length === 0}
+            >
+              Next Step
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14" /><polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </main>

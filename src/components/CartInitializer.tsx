@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { initializeCart, selectIsCartLoaded } from '@/store/slices/cartSlice';
 import { CartData } from '@/types';
@@ -16,9 +16,15 @@ export default function CartInitializer({
 }: CartInitializerProps) {
     const dispatch = useAppDispatch();
     const isLoaded = useAppSelector(selectIsCartLoaded);
+    const [hydrationChecked, setHydrationChecked] = useState(false);
+
+    // Wait one tick so StoreProvider's hydration useEffect runs first
+    useEffect(() => {
+        setHydrationChecked(true);
+    }, []);
 
     useEffect(() => {
-        if (!isLoaded) {
+        if (hydrationChecked && !isLoaded) {
             dispatch(
                 initializeCart({
                     items: cartData.cartItems,
@@ -27,7 +33,7 @@ export default function CartInitializer({
                 })
             );
         }
-    }, [dispatch, cartData, isLoaded]);
+    }, [dispatch, cartData, isLoaded, hydrationChecked]);
 
     return <>{children}</>;
 }
